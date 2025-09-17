@@ -29,7 +29,6 @@ def train():
         print(f"Episode {ep}, Reward: {ep_reward}")
 
     env.close()
-    # Lưu model
     agent.actor.save_weights("ddpg_actor.h5")
     agent.critic.save_weights("ddpg_critic.h5")
 

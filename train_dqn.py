@@ -8,7 +8,7 @@ def train():
 
     agent = DQN(state_dim, action_dim)
 
-    episodes = 100
+    episodes = 1
     for ep in range(episodes):
         s = env.reset()
         done = False
@@ -24,6 +24,6 @@ def train():
         print(f"Episode {ep}, Reward: {ep_reward}")
 
     env.close()
-
+    agent.q.set_weights("dqn_weights.h5")
 if __name__ == "__main__":
     train()
