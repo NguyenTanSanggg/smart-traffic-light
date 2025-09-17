@@ -4,7 +4,7 @@ from envs.sumo_env import SumoEnv
 from agents.dqn import DQN
 
 def demo():
-    env = SumoEnv("configs/floww.sumocfg")
+    env = SumoEnv("config/config.sumocfg")
     s = env.reset()
     state_dim = s.shape[0]
     action_dim = env.action_space.n

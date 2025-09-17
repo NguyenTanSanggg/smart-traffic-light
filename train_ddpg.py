@@ -3,7 +3,7 @@ from agents.ddpg import DDPGAgent
 import numpy as np
 
 def train():
-    env = SumoEnv("configs/floww.sumocfg")
+    env = SumoEnv("config/config.sumocfg")
     state_dim = env.observation_space.shape[0]
     action_dim = 1
 
