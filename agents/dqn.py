@@ -42,6 +42,11 @@ class DQN:
         q_values = self.q(state)
         return int(tf.argmax(q_values[0]).numpy())
 
+    def select_action_greedy(self, state):
+        state = np.expand_dims(state, axis=0).astype(np.float32)
+        q_values = self.q(state)
+        return int(tf.argmax(q_values[0]).numpy())
+
     def optimize(self, batch_size=64):
         if len(self.replay) < batch_size:
             return
