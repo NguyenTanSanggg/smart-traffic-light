@@ -13,9 +13,9 @@ def train():
     except:
         pass
 
-    episodes = 10
+    episodes = 1
     for ep in range(episodes):
-        s, _ = env.reset()
+        s = env.reset()
         done = False
         ep_reward = 0
         while not done:

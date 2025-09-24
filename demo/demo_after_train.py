@@ -3,7 +3,7 @@ from envs.sumo_env import SumoEnv
 from agents.dqn import DQN
 
 def demo():
-    env = SumoEnv("config/config.sumocfg", use_gui=True)
+    env = SumoEnv("../config/config.sumocfg", use_gui=True)
 
     s = env.reset()
     state_dim = s.shape[0]
@@ -13,12 +13,13 @@ def demo():
 
     dummy = np.zeros((1, state_dim), dtype=np.float32)
     agent.q(dummy)
-    agent.q.load_weights("dqn_weights.weights.h5")
+    agent.q.load_weights("../dqn_weights.weights.h5")
 
     done = False
     while not done:
         a = agent.select_action_greedy(s)
-        s, r, done, _ = env.step(a)
+        s, r, terminated, truncated, _ = env.step(a)
+        done = terminated or truncated
 
     env.close()
 

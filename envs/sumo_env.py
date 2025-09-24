@@ -19,7 +19,7 @@ class SumoEnv(gym.Env):
         self.steps = 0
         self.use_gui = use_gui
         self.verbose = verbose
-        self.min_green = min_green  # thời gian tối thiểu
+        self.min_green = min_green
         self.time_since_change = 0
         self.last_action = None
 
@@ -41,30 +41,22 @@ class SumoEnv(gym.Env):
         return self._get_state()
 
     def step(self, action):
-        reward_penalty = 0
-
-        if self.last_action is not None and action != self.last_action:
-            if self.time_since_change < self.min_green:
-                action = self.last_action
-                reward_penalty = -10
-
         self._apply_action(action)
-
         for _ in range(self.control_interval):
             traci.simulationStep()
             self.steps += 1
-            self.time_since_change += 1
 
         state = self._get_state()
-        reward = self._get_reward() + reward_penalty
-        done = self.steps >= self.max_steps
-        if done:
+        reward = self._get_reward()
+        terminated = self.steps >= self.max_steps
+        truncated = False
+        if terminated:
             traci.close()
 
         if self.verbose:
-            print(f"[Step {self.steps}] Action={action}, Reward={reward:.2f}, Done={done}")
+            print(f"[Step {self.steps}] Action={action}, Reward={reward:.2f}, Done={terminated}")
 
-        return state, reward, done, {}
+        return state, reward, terminated, truncated, {}
 
     def _get_state(self):
         tls = traci.trafficlight.getIDList()[0]
