@@ -75,8 +75,14 @@ class SumoEnv(gym.Env):
     def _get_reward(self):
         tls = traci.trafficlight.getIDList()[0]
         lanes = traci.trafficlight.getControlledLanes(tls)
-        total_wait = sum(traci.lane.getWaitingTime(l) for l in lanes)
-        return -total_wait
+        current_wait = sum(traci.lane.getWaitingTime(l) for l in lanes)
+        throughput = traci.simulation.getArrivedNumber()
+        if not hasattr(self, "last_total_wait"):
+            self.last_total_wait = current_wait
+        delta_wait = self.last_total_wait - current_wait
+        self.last_total_wait = current_wait
+        reward = 1.0 * delta_wait + 0.5 * throughput
+        return reward
 
     def close(self):
         try:

@@ -13,7 +13,7 @@ def train():
     except:
         pass
 
-    episodes = 1
+    episodes = 3
     for ep in range(episodes):
         s = env.reset()
         done = False
@@ -27,7 +27,7 @@ def train():
             s = ns
             ep_reward += r
         agent.update_target()
-        print(f"Episode {ep}, Reward: {ep_reward}")
+        print(f"Episode {ep+1}, Reward: {ep_reward}")
 
         agent.q.save_weights("dqn_weights.weights.h5")
 

@@ -10,7 +10,7 @@ class QNetwork(Model):
         super(QNetwork, self).__init__()
         self.fc1 = Dense(256, activation='relu')
         self.fc2 = Dense(256, activation='relu')
-        self.out = Dense(action_size)
+        self.out = Dense(action_size, activation='linear')
 
     def call(self, x):
         x = self.fc1(x)
@@ -49,7 +49,7 @@ class DQN:
 
     def optimize(self, batch_size=64):
         if len(self.replay) < batch_size:
-            return
+            return None
 
         batch = self.replay.sample(batch_size)
         state = np.vstack(batch.state).astype(np.float32)
@@ -68,6 +68,7 @@ class DQN:
 
         grads = tape.gradient(loss, self.q.trainable_variables)
         self.opt.apply_gradients(zip(grads, self.q.trainable_variables))
+        return float(loss.numpy())
 
     def update_target(self):
         self.target_q.set_weights(self.q.get_weights())
