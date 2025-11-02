@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.layers import Dense
@@ -8,7 +9,7 @@ from agents.replay_buffer import ReplayBuffer
 class QNetwork(Model):
     def __init__(self, state_size, action_size):
         super(QNetwork, self).__init__()
-        self.fc1 = Dense(256, activation='relu')
+        self.fc1 = Dense(256, activation='relu', input_shape=(state_size,))
         self.fc2 = Dense(256, activation='relu')
         self.out = Dense(action_size, activation='linear')
 
@@ -19,7 +20,7 @@ class QNetwork(Model):
 
 class DQN:
     def __init__(self, state_size, action_size,
-                 gamma=0.99, lr=1e-4, buffer_size=100000):
+                 gamma=0.99, lr=5e-5, buffer_size=200000):
         self.q = QNetwork(state_size, action_size)
         self.target_q = QNetwork(state_size, action_size)
         self.target_q.set_weights(self.q.get_weights())
@@ -30,7 +31,20 @@ class DQN:
         self.steps_done = 0
         self.action_size = action_size
         self.gamma = gamma
-        self.eps_start, self.eps_end, self.eps_decay = 1.0, 0.05, 200000
+        self.eps_start, self.eps_end, self.eps_decay = 1.0, 0.05, 500000
+
+    def save_checkpoint(self, path="checkpoints/ckpt"):
+        dir_name = os.path.dirname(path)
+        os.makedirs(dir_name, exist_ok=True)
+        ckpt = tf.train.Checkpoint(optimizer=self.opt, model=self.q)
+        ckpt.write(path)
+        print(f"Checkpoint saved to {path}")
+
+    def load_checkpoint(self, path="checkpoints/ckpt"):
+        ckpt = tf.train.Checkpoint(optimizer=self.opt, model=self.q)
+        status = ckpt.restore(path)
+        status.expect_partial()
+        print(f"Checkpoint loaded from {path}")
 
     def select_action(self, state):
         eps = self.eps_end + (self.eps_start - self.eps_end) * \
@@ -47,7 +61,7 @@ class DQN:
         q_values = self.q(state)
         return int(tf.argmax(q_values[0]).numpy())
 
-    def optimize(self, batch_size=64):
+    def optimize(self, batch_size=128):
         if len(self.replay) < batch_size:
             return None
 
@@ -64,11 +78,19 @@ class DQN:
             )
             q_next = tf.reduce_max(self.target_q(next_state), axis=1)
             q_target = reward + self.gamma * q_next * (1 - done)
-            loss = tf.reduce_mean(tf.square(q_target - q_values))
+            loss = tf.keras.losses.MSE(q_target, q_values)
 
         grads = tape.gradient(loss, self.q.trainable_variables)
+        grads, _ = tf.clip_by_global_norm(grads, 1.0)
         self.opt.apply_gradients(zip(grads, self.q.trainable_variables))
-        return float(loss.numpy())
 
-    def update_target(self):
-        self.target_q.set_weights(self.q.get_weights())
+        return float(tf.reduce_mean(loss).numpy())
+
+    def update_target(self, tau=0.005):
+        q_weights = self.q.get_weights()
+        target_weights = self.target_q.get_weights()
+
+        for i in range(len(target_weights)):
+            target_weights[i] = tau * q_weights[i] + (1 - tau) * target_weights[i]
+
+        self.target_q.set_weights(target_weights)
