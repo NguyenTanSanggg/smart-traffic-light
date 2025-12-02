@@ -5,20 +5,20 @@
 
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
     <!-- Vehicles, persons and containers (sorted by depart) -->
-    <flow id="f_0" begin="0.00" from="E1" to="-E2" end="300" number="50"/>
-    <flow id="f_1" begin="0.00" from="-E1.200" to="-E2" end="300" number="50"/>
-    <flow id="f_10" begin="0.00" from="E2" to="E3" end="300" number="50"/>
-    <flow id="f_11" begin="0.00" from="-E3" to="-E1" end="300" number="50"/>
-    <flow id="f_12" begin="0.00" from="E1" to="E1.200" end="300" number="50"/>
-    <flow id="f_13" begin="0.00" from="E1" to="E3" end="300" number="50"/>
-    <flow id="f_14" begin="0.00" from="-E3" to="E1.200" end="300" number="50"/>
-    <flow id="f_15" begin="0.00" from="-E1.200" to="-E2" end="300" number="50"/>
-    <flow id="f_2" begin="0.00" from="E1" to="E1.200" end="300" number="50"/>
-    <flow id="f_3" begin="0.00" from="E2" to="E1.200" end="300" number="50"/>
-    <flow id="f_4" begin="0.00" from="-E1.200" to="-E1" end="300" number="50"/>
-    <flow id="f_5" begin="0.00" from="-E3" to="-E1" end="300" number="50"/>
-    <flow id="f_6" begin="0.00" from="-E3" to="-E2" end="300" number="50"/>
-    <flow id="f_7" begin="0.00" from="-E1.200" to="E3" end="300" number="50"/>
-    <flow id="f_8" begin="0.00" from="E2" to="E1.200" end="300" number="50"/>
-    <flow id="f_9" begin="0.00" from="E2" to="-E1" end="300" number="50"/>
+    <flow id="f_0" begin="0.00" from="E1" to="-E2" end="300" number="20"/>
+    <flow id="f_1" begin="0.00" from="-E1.200" to="-E2" end="300" number="20"/>
+    <flow id="f_10" begin="0.00" from="E2" to="E3" end="300" number="20"/>
+    <flow id="f_11" begin="0.00" from="-E3" to="-E1" end="300" number="20"/>
+    <flow id="f_12" begin="0.00" from="E1" to="E1.200" end="300" number="20"/>
+    <flow id="f_13" begin="0.00" from="E1" to="E3" end="300" number="20"/>
+    <flow id="f_14" begin="0.00" from="-E3" to="E1.200" end="300" number="20"/>
+    <flow id="f_15" begin="0.00" from="-E1.200" to="-E2" end="300" number="20"/>
+    <flow id="f_2" begin="0.00" from="E1" to="E1.200" end="300" number="20"/>
+    <flow id="f_3" begin="0.00" from="E2" to="E1.200" end="300" number="20"/>
+    <flow id="f_4" begin="0.00" from="-E1.200" to="-E1" end="300" number="20"/>
+    <flow id="f_5" begin="0.00" from="-E3" to="-E1" end="300" number="20"/>
+    <flow id="f_6" begin="0.00" from="-E3" to="-E2" end="300" number="20"/>
+    <flow id="f_7" begin="0.00" from="-E1.200" to="E3" end="300" number="20"/>
+    <flow id="f_8" begin="0.00" from="E2" to="E1.200" end="300" number="20"/>
+    <flow id="f_9" begin="0.00" from="E2" to="-E1" end="300" number="20"/>
 </routes>

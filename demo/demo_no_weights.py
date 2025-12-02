@@ -13,7 +13,7 @@ import numpy as np
 sumo_cfg = "../config/config.sumocfg"
 output_file = "fixed_results.csv"
 
-traci.start(["sumo", "-c", sumo_cfg, "--no-step-log", "true"])
+traci.start(["sumo-gui", "-c", sumo_cfg, "--no-step-log", "true"])
 
 lanes = traci.trafficlight.getControlledLanes(traci.trafficlight.getIDList()[0])
 vehicles_seen = set()
